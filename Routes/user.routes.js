@@ -25,9 +25,9 @@ userRouter.post("/register", async (req, res) => {
             else {
                 const user = new UserModel({ name, email, pass: hash })
                 await user.save()
+                res.json({ msg: "User has been Registered", user: req.body })
             }
         })
-        res.json({ msg: "User has been Registered", user: req.body })
     } catch (error) {
         res.json({ error: error.message })
     }
@@ -43,7 +43,7 @@ userRouter.post("/login", async (req, res) => {
         if (user) {
             bcrypt.compare(pass, user.pass, (err, result) => {
                 if (result) {
-                    // estiblished relationship connection here to add new not of perticulau user
+                    // estiblished relationship connection here to add new not of particular user
                     let token = jwt.sign({ userID: user._id, userName: user.name }, process.env.secret)
                     res.json({ msg: "Logged In....!", token })
                 }
